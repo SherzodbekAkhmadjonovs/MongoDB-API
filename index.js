@@ -65,4 +65,14 @@ async function updateItem2(id) {
   );
   console.log(updatedItem);
 }
-updateItem2("612920fefe2dc0b87af5cfc3");
+
+async function deleteItem1(id) {
+  const result = await InvetoryModel.deleteOne({ _id: id });
+  console.log(result, "Succesfully deleted");
+}
+async function deleteItem2(id) {
+  // use findbyOneandRemove()
+  const oytem = await InvetoryModel.findByIdAndRemove({ _id: id });
+  console.log(oytem, "Succesfully deleted");
+}
+deleteItem2("612920fefe2dc0b87af5cfc4");
