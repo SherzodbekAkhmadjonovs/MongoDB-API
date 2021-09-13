@@ -17,14 +17,38 @@ const sizeSchema = new mongoose.Schema({
 });
 const inventorySchema = new mongoose.Schema(
   {
-    item: String,
-    qty: Number,
-    size: sizeSchema,
-    status: String,
+    item: { type: String, required: true },
+    qty: {
+      type: Number,
+      required: function () {
+        return this.isPublished;
+      },
+    },
+    // size: sizeSchema,
+    status: {
+      type: String,
+      enum: ["old", "new", "normal"],
+    },
+    isPublished: Boolean,
   },
   { collection: "inventory" }
 );
 const InvetoryModel = mongoose.model("Inventory", inventorySchema);
+async function createItem() {
+  const Item = new InvetoryModel({
+    item: "IMac",
+    status: "new",
+    isPublished: true,
+    qty: 6000,
+  });
+  try {
+    // await Item.validate();
+    const NewItem = await Item.save();
+    console.log(NewItem);
+  } catch (ex) {
+    console.log(ex);
+  }
+}
 async function getItems1() {
   return await InvetoryModel.find({
     status: "A",
@@ -75,4 +99,4 @@ async function deleteItem2(id) {
   const oytem = await InvetoryModel.findByIdAndRemove({ _id: id });
   console.log(oytem, "Succesfully deleted");
 }
-deleteItem2("612920fefe2dc0b87af5cfc4");
+createItem();
