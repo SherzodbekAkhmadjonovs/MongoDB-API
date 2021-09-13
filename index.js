@@ -30,16 +30,30 @@ const inventorySchema = new mongoose.Schema(
       enum: ["old", "new", "normal"],
     },
     isPublished: Boolean,
+    // tags: {
+    //   type: Array,
+    //   validate: {
+    //     isAsync: true,
+    //     validator: function (val, callback) {
+    //       setTimeout(() => {
+    //         const result = val && val.lengths > 0;
+    //         callback(result);
+    //       }, 5000);
+    //     },
+    //     message: "Tags should have at least 1 element",
+    //   },
+    // },
   },
   { collection: "inventory" }
 );
 const InvetoryModel = mongoose.model("Inventory", inventorySchema);
 async function createItem() {
   const Item = new InvetoryModel({
-    item: "IMac",
+    item: "Macbook",
     status: "new",
     isPublished: true,
     qty: 6000,
+    tags: ["Apple", "Mac"],
   });
   try {
     // await Item.validate();
